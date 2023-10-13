@@ -7,6 +7,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -76,10 +77,11 @@ export default function SignIn() {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <OAuth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Don&apos;t have an account?</p>
-        <Link to="/sign-uo">
+        <Link to="/sign-up">
           <span className="text-blue-700">Sign up</span>
         </Link>
       </div>
