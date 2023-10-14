@@ -6,6 +6,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import AvatarProgress from "../components/AvatarProgress";
 import {
   updateUserStart,
@@ -166,6 +167,12 @@ export default function Profile() {
         >
           {loading ? "Loading..." : "Update"}
         </button>
+        <Link
+          className="bg-green-700 text-white rounded-lg p-3 uppercase hover:opacity-95 text-center"
+          to="/create-listing"
+        >
+          Create Listring
+        </Link>
       </form>
       <div className="flex justify-between mt-5 cursor-pointer">
         <span onClick={handleDeleteUser} className="text-red-700 cursor-pointe">
