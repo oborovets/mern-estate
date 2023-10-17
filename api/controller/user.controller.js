@@ -3,6 +3,19 @@ import { errorHandler } from "../utils/error.js";
 import User from "../models/user.model.js";
 import Listing from "../models/listing.model.js";
 
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) return next(routeHandler(404, "User not found!"));
+
+    const { password, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id) {
     return next(errorHandler(401, "You can only update your own account."));
