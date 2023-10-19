@@ -12,7 +12,9 @@ import {
   FaParking,
   FaShare,
 } from "react-icons/fa";
+
 import Contact from "../components/Contact";
+import api from "../services/api";
 
 import "swiper/css/bundle";
 
@@ -30,10 +32,7 @@ export default function Listing() {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const res = await fetch(`/api/listing/${listingId}`, {
-          method: "GET",
-        });
-        const data = await res.json();
+        const { data } = api.get(`/listing/${listingId}`);
 
         if (data.success === false) {
           return setError(true);

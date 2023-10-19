@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import ListingForm from "../components/ListingForm";
+import api from "../services/api";
 
 export default function UpdateListing() {
   const { currentUser } = useSelector((state) => state.user);
@@ -20,15 +21,11 @@ export default function UpdateListing() {
     }
 
     try {
-      const res = await fetch(`/api/listing/update/${listingId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+      const { data } = await api.post(`/api/listing/update/${listingId}`, {
+        ...formData,
+        userRef: currentUser._id,
       });
-      const data = await res.json();
-      console.log(data);
+
       if (data.success === false) {
         return setError(data.message);
       }

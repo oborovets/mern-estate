@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
+import api from "../services/api";
+
 import {
   signInStart,
   signInSuccess,
@@ -30,15 +32,8 @@ export default function SignIn() {
     e.preventDefault();
     dispatch(signInStart());
     try {
-      const res = await fetch("/api/auth/sign-in", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const { data } = await api.post("/api/auth/sign-in", formData);
 
-      const data = await res.json();
       if (data.success === false) {
         dispatch(signInFailure(data.message));
         return;

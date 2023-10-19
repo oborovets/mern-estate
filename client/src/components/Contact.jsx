@@ -1,14 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+
+import api from "../services/api";
+
 export default function Contact({ listing }) {
   const [landlord, setLandlord] = useState(null);
   const [message, setMessage] = useState("");
   useEffect(() => {
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(`/api/user/${listing.userRef}`);
-        const data = await res.json();
+        const { data } = await api.get(`/user/${listing.userRef}`);
         setLandlord(data);
       } catch (error) {
         console.log(error);
@@ -17,6 +19,7 @@ export default function Contact({ listing }) {
 
     fetchLandlord();
   }, [listing.userRef]);
+
   return (
     <>
       {landlord && (

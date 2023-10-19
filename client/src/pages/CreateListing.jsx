@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import ListingForm from "../components/ListingForm";
+import api from "../services/api";
 
 export default function CreateListing() {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,15 +20,11 @@ export default function CreateListing() {
     }
 
     try {
-      const res = await fetch("/api/listing/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+      const { data } = await api.post("/listing/create", {
+        ...formData,
+        userRef: currentUser._id,
       });
 
-      const data = await res.json();
       if (data.success === false) {
         return setError(data.message);
       }

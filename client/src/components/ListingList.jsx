@@ -2,6 +2,8 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import api from "../services/api";
+
 export default function ListingList({ currentUserId }) {
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
@@ -9,8 +11,7 @@ export default function ListingList({ currentUserId }) {
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      const res = await fetch(`api/user/listings/${currentUserId}`);
-      const data = await res.json();
+      const { data } = await api.get(`/user/listings/${currentUserId}`);
 
       if (data.success === false) {
         return setShowListingsError(true);
@@ -23,10 +24,8 @@ export default function ListingList({ currentUserId }) {
 
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
-        method: "DELETE",
-      });
-      const data = res.json();
+      const { data } = await api.delete(`/listing/delete/${listingId}`);
+
       if (data.success === false) {
         console.log(data);
         return;

@@ -7,7 +7,9 @@ import {
 } from "firebase/storage";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 import AvatarProgress from "../components/AvatarProgress";
+import ListingList from "../components/ListingList";
 import {
   updateUserStart,
   updateUserSuccess,
@@ -20,7 +22,7 @@ import {
   signOutUserFailure,
 } from "../redux/user/userSlice";
 import { app } from "../firebase";
-import ListingList from "../components/ListingList";
+import api from "../services/api";
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -63,14 +65,10 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      const data = await res.json();
+      const { data } = await api.post(
+        `/user/update/${currentUser._id}`,
+        formData
+      );
 
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
@@ -87,11 +85,7 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
+      const { data } = await api.delete(`/user/delete/${currentUser._id}`);
 
       if (data.sucess === false) {
         dispatch(deleteUserFailure(data.message));
@@ -106,8 +100,8 @@ export default function Profile() {
   const handleSignOut = async () => {
     dispatch(signOutUserStart());
     try {
-      const res = await fetch("/api/auth/sign-out");
-      const data = await res.json();
+      const { data } = await api.get("/auth/sign-out");
+
       if (data.sucess === false) {
         dispatch(signOutUserFailure(data.message));
       }

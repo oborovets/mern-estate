@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import ListingItem from "../components/ListingItem";
+import api from "../services/api";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -41,8 +43,8 @@ export default function Search() {
       setLoading(true);
       const searchQuery = urlParams.toString();
       try {
-        const res = await fetch(`/api/listing/get?${searchQuery}`);
-        const data = await res.json();
+        const { data } = await api.get(`/listing/get?${searchQuery}`);
+
         if (data.length > 8) {
           setShowMore(true);
         } else {
@@ -98,8 +100,7 @@ export default function Search() {
     urlParams.set("startIndex", startIndex);
 
     const searchQuery = urlParams.toString();
-    const res = await fetch(`/api/listing/get?${searchQuery}`);
-    const data = res.json();
+    const { data } = await api.get(`/listing/get?${searchQuery}`);
 
     if (data.length < 9) {
       setShowMore(false);

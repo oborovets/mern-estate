@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
+
 import ListingItem from "../components/ListingItem";
+import api from "../services/api";
 
 import "swiper/css/bundle";
 
@@ -17,8 +19,7 @@ export default function Home() {
   useEffect(() => {
     const fetchSaleListings = async () => {
       try {
-        const res = await fetch(`/api/listing/get?type=sale&limit=4`);
-        const data = await res.json();
+        const { data } = await api.get("/listing/get?type=sale&limit=4");
         setSaleListings(data);
       } catch (error) {
         console.log(error);
@@ -26,8 +27,8 @@ export default function Home() {
     };
     const fetchRentListings = async () => {
       try {
-        const res = await fetch(`/api/listing/get?type=rent&limit=4`);
-        const data = await res.json();
+        const { data } = await api.get(`/listing/get?type=rent&limit=4`);
+
         setRentListings(data);
       } catch (error) {
         console.log(error);
@@ -35,8 +36,7 @@ export default function Home() {
     };
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch(`/api/listing/get?offer=true&limit=4`);
-        const data = await res.json();
+        const { data } = await api.get(`/listing/get?offer=true&limit=4`);
         setOfferListings(data);
       } catch (error) {
         console.log(error);
@@ -48,7 +48,6 @@ export default function Home() {
     fetchSaleListings();
   }, []);
 
-  console.log(offerListings);
   return (
     <div>
       <div className="flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto">

@@ -7,6 +7,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import api from "../services/api";
 
 const initialState = {
   imageUrls: [],
@@ -95,8 +96,7 @@ export default function ListingForm({ handleSubmit, listingId }) {
 
   useEffect(() => {
     const fetchListing = async () => {
-      const res = await fetch(`/api/listing/${listingId}`);
-      const data = await res.json();
+      const { data } = await api.get(`/listing/${listingId}`);
       // TODO: HANDLE ERROR PROPERLY
       if (data.success === false) {
         console.log(data.message);
@@ -109,7 +109,7 @@ export default function ListingForm({ handleSubmit, listingId }) {
       fetchListing();
     }
   }, [listingId]);
-  console.log(formData);
+
   return (
     <form
       onSubmit={(e) => handleSubmit(e, setError, setLoading, formData)}
