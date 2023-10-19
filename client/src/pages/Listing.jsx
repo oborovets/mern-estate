@@ -32,7 +32,7 @@ export default function Listing() {
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const { data } = api.get(`/listing/${listingId}`);
+        const { data } = await api.get(`/listing/${listingId}`);
 
         if (data.success === false) {
           return setError(true);

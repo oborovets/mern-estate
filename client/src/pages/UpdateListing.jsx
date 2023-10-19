@@ -21,7 +21,7 @@ export default function UpdateListing() {
     }
 
     try {
-      const { data } = await api.post(`/api/listing/update/${listingId}`, {
+      const { data } = await api.post(`/listing/update/${listingId}`, {
         ...formData,
         userRef: currentUser._id,
       });
